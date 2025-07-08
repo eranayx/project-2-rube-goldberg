@@ -21,25 +21,28 @@ public class MaterialChanger : MonoBehaviour
         Collider selfCollider = gameObject.GetComponent<Collider>();
         Collider otherCollider = other.gameObject.GetComponent<Collider>();
 
-        // Change material if provided
-        if (newSelfMaterial != null && selfMeshRenderer != null)
+        if (other.CompareTag("Ball"))
         {
-            selfMeshRenderer.material = newSelfMaterial;
-        }
+            // Change material if provided
+            if (newSelfMaterial != null && selfMeshRenderer != null)
+            {
+                selfMeshRenderer.material = newSelfMaterial;
+            }
 
-        if (newOtherMaterial != null && otherMeshRenderer != null)
-        {
-            otherMeshRenderer.material = newOtherMaterial;
-        }
+            if (newOtherMaterial != null && otherMeshRenderer != null)
+            {
+                otherMeshRenderer.material = newOtherMaterial;
+            }
 
-        if (newSelfPhysicMaterial != null && selfCollider.material != null)
-        {
-            selfCollider.material = newSelfPhysicMaterial;
-        }
+            if (newSelfPhysicMaterial != null && selfCollider.material != null)
+            {
+                selfCollider.material = newSelfPhysicMaterial;
+            }
 
-        if (newOtherPhysicMaterial != null && otherCollider.material != null)
-        {
-            otherCollider.material = newOtherPhysicMaterial;
+            if (newOtherPhysicMaterial != null && otherCollider.material != null)
+            {
+                otherCollider.material = newOtherPhysicMaterial;
+            }
         }
     }
 }

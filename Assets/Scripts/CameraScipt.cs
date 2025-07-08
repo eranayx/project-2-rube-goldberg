@@ -1,21 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraScipt : MonoBehaviour
 {
     [SerializeField]
     private GameObject objectToFollow;
+
+    // What if I wanted to add more triggers and angles?
+    // Should I be defining a struct/class MyClass with trigger and newAngle variables
+    // Then use a list with instances of MyClass to store and iterate thru them?
+    // If so, how can I add a large amount of values in the inspector?
+
     [SerializeField]
     private DominoTrigger angle1Trigger;
     [SerializeField]
     private PlinkoTrigger angle2Trigger;
     [SerializeField]
+    private CountObjectsPassed angle3Trigger;
+    [SerializeField]
     private GameObject newAngle1;
     [SerializeField]
     private GameObject newAngle2;
+    [SerializeField]
+    private GameObject newAngle3;
+
     [SerializeField]
     private float moveSpeed;
     [SerializeField]
@@ -25,14 +32,17 @@ public class CameraScipt : MonoBehaviour
 
     private bool followingBall = true;
 
+    // Is there a better way than a dummy variable
+    private bool defaultBoolRef = true;
+
     private void Start()
     {
         angle1Trigger = GameObject.FindGameObjectWithTag("Domino Trigger").GetComponent<DominoTrigger>();
         angle2Trigger = GameObject.FindGameObjectWithTag("Plinko Trigger").GetComponent<PlinkoTrigger>();
+        angle3Trigger = GameObject.FindGameObjectWithTag("Finished UI Trigger").GetComponent<CountObjectsPassed>();
     }
 
-    // Update is called once per frame
-    private void Update()
+    private void FixedUpdate()
     {
         if (angle1Trigger.triggered)
         {
@@ -44,6 +54,11 @@ public class CameraScipt : MonoBehaviour
             EaseToward(newAngle2, ref angle2Trigger.triggered);
         }
 
+        else if (angle3Trigger.allObjectsPassed)
+        {
+            EaseToward(newAngle3);
+        }
+
         else if (followingBall)
         {
             // Follow the ball
@@ -52,16 +67,25 @@ public class CameraScipt : MonoBehaviour
         }
     }
 
+    // Is there a better way to overload the function if I needed to
+    private void EaseToward(GameObject newAngle)
+    {
+        EaseToward(newAngle, ref defaultBoolRef);
+    }
+
+    // Eases camera toward new position
     private void EaseToward(GameObject newAngle, ref bool trigger)
     {
-        var moveStep = moveSpeed * Time.deltaTime;
-        var rotateStep = rotateSpeed * Time.deltaTime;
+        float moveStep = moveSpeed * Time.fixedDeltaTime;
+        float rotateStep = rotateSpeed * Time.fixedDeltaTime;
         Vector3 velocity = Vector3.zero;
 
         followingBall = false;
 
         // Move / rotate towards last (fixed) camera angle
         transform.position = Vector3.SmoothDamp(transform.position, newAngle.transform.position, ref velocity, moveStep);
+
+        // How can I not make it rotate so awkwardly
         transform.rotation = Quaternion.Lerp(transform.rotation, newAngle.transform.rotation, rotateStep);
 
         // Snap location when near end location
