@@ -7,9 +7,11 @@ public class CameraScipt : MonoBehaviour
 
     // What if I wanted to add more triggers and angles?
     // Should I be defining a struct/class MyClass with trigger and newAngle variables
-    // Then use a list with instances of MyClass to store and iterate thru them?
+    // Then use a array with instances of MyClass to store and iterate thru them?
     // If so, how can I add a large amount of values in the inspector?
 
+    // DominoTrigger, PlinkoTrigger, CountObjectsPassed are all classes
+    // with a variable that turn true after a certain condition
     [SerializeField]
     private DominoTrigger angle1Trigger;
     [SerializeField]
@@ -21,12 +23,15 @@ public class CameraScipt : MonoBehaviour
     [SerializeField]
     private GameObject newAngle2;
     [SerializeField]
-    private GameObject newAngle3;
+    private GameObject newAngle3;   
 
+    // I feel these speeds aren't changing how fast it's moving/rotating when its too little
     [SerializeField]
     private float moveSpeed;
     [SerializeField]
     private float rotateSpeed;
+
+    // How far behind the ball the camera follows
     [SerializeField]
     private float followDistance = 5f;
 
@@ -67,7 +72,7 @@ public class CameraScipt : MonoBehaviour
         }
     }
 
-    // Is there a better way to overload the function if I needed to
+    // Is there a better way than a dummy variable to overload the function if I needed to
     private void EaseToward(GameObject newAngle)
     {
         EaseToward(newAngle, ref defaultBoolRef);

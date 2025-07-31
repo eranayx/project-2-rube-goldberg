@@ -8,6 +8,7 @@ public class SpeedBooster : MonoBehaviour
     private float speedBoost;
     [SerializeField]
     private ParticleSystem vfx;
+
     private void OnTriggerEnter(Collider other)
     {
         other.gameObject.GetComponent<Rigidbody>().velocity *= speedBoost;
